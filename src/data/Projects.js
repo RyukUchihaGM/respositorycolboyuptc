@@ -1,0 +1,48 @@
+export const projects = [
+  {
+    title: 'Landing de cafetería',
+    description: 'Página de presentación para un negocio local con menú, horarios y ubicación.',
+    author: 'Nombre del estudiante',
+    tags: ['HTML', 'CSS'],
+    url: 'https://sensational-mermaid-d7f311.netlify.app',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Portafolio personal',
+    description: 'Sitio con presentación, habilidades y proyectos, adaptable a celular.',
+    author: 'Nombre del estudiante',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Calculadora de notas',
+    description: 'Calcula el promedio del periodo y la nota que falta para aprobar.',
+    author: 'Nombre del estudiante',
+    tags: ['JavaScript'],
+    url: 'https://example.com',
+  },
+  {
+    title: 'Galería del colegio',
+    description: 'Galería de fotos con filtros por sede y vista ampliada de cada imagen.',
+    author: 'Nombre del estudiante',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Lista de tareas',
+    description: 'Agrega, marca y elimina tareas; se guardan en el navegador.',
+    author: 'Nombre del estudiante',
+    tags: ['JavaScript'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Formulario de inscripción',
+    description: 'Formulario con validación de campos y mensajes de error claros.',
+    author: 'Nombre del estudiante',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    url: 'https://example.com',
+  },
+]
