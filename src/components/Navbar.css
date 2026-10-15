@@ -1,0 +1,349 @@
+.navbar {
+  --navbar-bg: #000000;
+  --navbar-height: 56px;
+  --navbar-radius: 20px;   /* esquinas inferiores y "alas" superiores */
+  --navbar-inset: 12px;    /* separación entre el borde y el botón */
+  --navbar-ease: cubic-bezier(0.2, 0, 0, 1);
+  --navbar-focus: #0a84ff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* solo la muesca recibe clics */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Muesca negra pegada al borde superior ---------- */
+
+.navbar__container {
+  position: relative;
+  pointer-events: auto;
+  padding: 0 var(--navbar-inset) 0 16px;
+
+  background-color: var(--navbar-bg);
+  border-radius: 0 0 var(--navbar-radius) var(--navbar-radius);
+
+  /* drop-shadow sigue la forma real, incluidas las alas */
+  filter: drop-shadow(0 0 0 rgb(0 0 0 / 0));
+  transition: filter 300ms var(--navbar-ease);
+}
+
+.navbar[data-scrolled='true'] .navbar__container {
+  filter:
+    drop-shadow(0 1px 1px rgb(0 0 0 / 0.12))
+    drop-shadow(0 8px 24px rgb(0 0 0 / 0.28));
+}
+
+/* Esquinas invertidas: la muesca se funde con el borde de la página */
+.navbar__container::before,
+.navbar__container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: var(--navbar-radius);
+  height: var(--navbar-radius);
+  pointer-events: none;
+}
+
+.navbar__container::before {
+  right: calc(100% - 0.5px);
+  background: radial-gradient(
+    circle at 0 100%,
+    transparent var(--navbar-radius),
+    var(--navbar-bg) calc(var(--navbar-radius) + 0.5px)
+  );
+}
+
+.navbar__container::after {
+  left: calc(100% - 0.5px);
+  background: radial-gradient(
+    circle at 100% 100%,
+    transparent var(--navbar-radius),
+    var(--navbar-bg) calc(var(--navbar-radius) + 0.5px)
+  );
+}
+
+.navbar__row {
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* ---------- Logo ---------- */
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 4px 4px;
+  margin-left: -4px;
+  border-radius: 10px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Ícono de carpeta: cambia estos tres colores por los de tu marca */
+.navbar__icon {
+  --icon-back: #c8102e;   /* rojo */
+  --icon-paper: #ffffff;  /* blanco */
+  --icon-front: #0b7a3e;  /* verde */
+
+  display: block;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
+}
+
+.navbar__icon-back  { fill: var(--icon-back); }
+.navbar__icon-paper { fill: var(--icon-paper); }
+.navbar__icon-front { fill: var(--icon-front); }
+
+.navbar__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+/* ---------- Links con fondo deslizante ---------- */
+
+.navbar__links {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.navbar__indicator {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 32px;
+  width: var(--w);
+  translate: var(--x) -50%;
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 0.1);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navbar__indicator {
+    transition-property: translate, width;
+    transition-duration: 400ms;
+    transition-timing-function: var(--navbar-ease);
+  }
+}
+
+.navbar__link {
+  position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: #98989d;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+.navbar__link[aria-current] {
+  color: #ffffff;
+}
+
+/* ---------- Botón ---------- */
+
+.navbar__button {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  /* radio concéntrico con la esquina de la muesca: 20 - 12 = 8 */
+  border-radius: calc(var(--navbar-radius) - var(--navbar-inset));
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition-property: background-color, scale;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navbar__button:active {
+    scale: 0.96;
+  }
+}
+
+@media (hover: hover) {
+  .navbar__link:hover {
+    color: #ffffff;
+  }
+
+  .navbar__button:hover {
+    background-color: #e5e5ea;
+  }
+}
+
+/* ---------- Botón de menú (solo móvil) ---------- */
+
+.navbar__toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  margin-left: -8px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.navbar__toggle-line {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 1.5px;
+  border-radius: 2px;
+  background-color: currentColor;
+  transition: translate 300ms var(--navbar-ease), rotate 300ms var(--navbar-ease);
+}
+
+.navbar__toggle-line:first-child { translate: 0 -3.5px; }
+.navbar__toggle-line:last-child  { translate: 0 3.5px; }
+
+.navbar[data-open='true'] .navbar__toggle-line:first-child { translate: 0 0; rotate: 45deg; }
+.navbar[data-open='true'] .navbar__toggle-line:last-child  { translate: 0 0; rotate: -45deg; }
+
+/* ---------- Panel móvil ---------- */
+
+.navbar__panel {
+  display: none;
+}
+
+/* ---------- Foco ---------- */
+
+.navbar__brand:focus-visible,
+.navbar__link:focus-visible,
+.navbar__button:focus-visible,
+.navbar__toggle:focus-visible,
+.navbar__panel-link:focus-visible {
+  outline: 2px solid var(--navbar-focus);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .navbar__container { border: 1px solid CanvasText; border-top: 0; }
+  .navbar__indicator { border: 1px solid Highlight; }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 640px) {
+  .navbar__icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navbar {
+    --navbar-height: 52px;
+    --navbar-radius: 18px;
+    --navbar-inset: 10px;
+  }
+
+  .navbar__container {
+    width: min(100% - 32px, 380px);
+    transition: filter 300ms var(--navbar-ease), border-radius 300ms var(--navbar-ease);
+  }
+
+  .navbar[data-open='true'] .navbar__container {
+    border-radius: 0 0 24px 24px;
+  }
+
+  .navbar__row {
+    gap: 12px;
+  }
+
+  .navbar__brand {
+    margin-right: auto;
+  }
+
+  .navbar__links {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: grid;
+    order: 2;
+    margin-left: 0;
+  }
+
+  .navbar__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 350ms var(--navbar-ease);
+  }
+
+  .navbar[data-open='true'] .navbar__panel {
+    grid-template-rows: 1fr;
+  }
+
+  .navbar__panel-inner {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .navbar__panel-link {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 6px;
+    color: #98989d;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+    opacity: 0;
+    translate: 0 -6px;
+    transition: opacity 200ms ease-out, translate 300ms var(--navbar-ease), color 150ms ease-out;
+  }
+
+  .navbar__panel-link:last-child {
+    margin-bottom: 8px;
+  }
+
+  .navbar__panel-link[aria-current] {
+    color: #ffffff;
+  }
+
+  .navbar[data-open='true'] .navbar__panel-link {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .navbar[data-open='true'] .navbar__panel-link:nth-child(2) { transition-delay: 40ms; }
+  .navbar[data-open='true'] .navbar__panel-link:nth-child(3) { transition-delay: 80ms; }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+  .navbar__panel,
+  .navbar__toggle-line {
+    transition: none;
+  }
+
+  .navbar__panel-link {
+    translate: 0 0;
+  }
+}

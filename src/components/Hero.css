@@ -1,0 +1,254 @@
+.hero {
+  --hero-ease: cubic-bezier(0.2, 0, 0, 1);
+  --hero-fade: 1200ms;
+  --hero-focus: #0a84ff;
+  --hero-edge: clamp(16px, 3vw, 44px);
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 520px;
+  overflow: hidden;
+  background-color: #0a1a4a;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero:focus-visible {
+  outline: 3px solid var(--hero-focus);
+  outline-offset: -3px;
+}
+
+/* ---------- Imágenes: fundido + acercamiento lento ---------- */
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity var(--hero-fade) var(--hero-ease);
+}
+
+.hero__slide.is-active {
+  z-index: 1;
+  opacity: 1;
+}
+
+.hero__slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__slide img {
+    scale: 1.08;
+    transition: scale 0s linear var(--hero-fade);
+  }
+
+  .hero__slide.is-active img {
+    scale: 1;
+    transition: scale 9000ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+}
+
+/* Sombra muy suave a la derecha para que los puntos se lean sobre fotos claras */
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to left, rgb(4 10 32 / 0.35) 0%, rgb(4 10 32 / 0) 22%),
+    linear-gradient(to bottom, rgb(4 10 32 / 0.3) 0%, rgb(4 10 32 / 0) 25%);
+}
+
+/* ---------- Puntos verticales ---------- */
+
+.hero__dots {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: var(--hero-edge);
+  translate: 0 -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero__dot {
+  position: relative;
+  width: 32px; /* área de clic; lo visible es mucho más pequeño */
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Punto central */
+.hero__dot-core {
+  grid-area: 1 / 1;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.45;
+  box-shadow: 0 0 8px rgb(0 0 0 / 0.35);
+  transition-property: opacity, scale;
+  transition-duration: 300ms;
+  transition-timing-function: var(--hero-ease);
+}
+
+.hero__dot.is-active .hero__dot-core {
+  opacity: 1;
+  scale: 1.17;
+}
+
+/* Anillo: pista tenue + trazo que se dibuja como temporizador */
+.hero__ring {
+  grid-area: 1 / 1;
+  width: 32px;
+  height: 32px;
+  overflow: visible;
+  rotate: -90deg; /* el trazo arranca arriba */
+  opacity: 0;
+  scale: 0.5;
+  transition-property: opacity, scale;
+  transition-duration: 400ms;
+  transition-timing-function: var(--hero-ease);
+}
+
+.hero__dot.is-active .hero__ring {
+  opacity: 1;
+  scale: 1;
+}
+
+.hero__ring circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.hero__ring-track {
+  opacity: 0.28;
+}
+
+.hero__ring-progress {
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0; /* sin autoplay: anillo completo */
+}
+
+.hero__ring-progress.is-timer {
+  animation: hero-ring var(--hero-interval, 6000ms) linear both;
+}
+
+.hero[data-playing='false'] .hero__ring-progress.is-timer {
+  animation-play-state: paused;
+}
+
+/* Pausado por el usuario: el anillo se atenúa como señal fija */
+.hero[data-paused='true'] .hero__ring-progress {
+  opacity: 0.5;
+}
+
+@keyframes hero-ring {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@media (hover: hover) {
+  .hero__dot:not(.is-active):hover .hero__dot-core {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__dot:not(:disabled):active .hero__dot-core {
+    scale: 0.96;
+  }
+}
+
+.hero__dot:focus-visible {
+  outline: 2px solid var(--hero-focus);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .hero__dot-core { background-color: ButtonText; }
+  .hero__ring circle { stroke: ButtonText; }
+}
+
+/* ---------- Responsive: el alto se adapta a la pantalla ---------- */
+
+/* Tablet (vertical u horizontal): proporción panorámica en vez de pantalla completa,
+   así la foto horizontal se ve casi entera sin recortes fuertes */
+@media (max-width: 1024px) {
+  .hero {
+    height: auto;
+    aspect-ratio: 16 / 10;
+    max-height: 100svh;
+    min-height: 420px;
+  }
+}
+
+/* Móvil */
+@media (max-width: 640px) {
+  .hero {
+    --hero-edge: 8px;
+    aspect-ratio: 4 / 3;
+    min-height: 300px;
+  }
+
+  .hero__dots {
+    gap: 0;
+  }
+
+  .hero__dot {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hero__ring {
+    width: 26px;
+    height: 26px;
+  }
+
+  .hero__dot-core {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+/* Móvil en horizontal (pantalla baja): ocupa toda la altura disponible */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    aspect-ratio: auto;
+    height: 100svh;
+    min-height: 0;
+  }
+}
+
+/* Acercamiento más sutil en pantallas pequeñas para no recortar de más */
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .hero__slide img {
+    scale: 1.04;
+  }
+}
