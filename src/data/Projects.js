@@ -2,7 +2,7 @@ export const projects = [
   {
     title: 'Landing de cafetería',
     description: 'Página de presentación para un negocio local con menú, horarios y ubicación.',
-    author: 'Nombre del estudiante',
+    author: ['Fernando Espinosa', 'Rosa Elena Arevalo'],
     tags: ['HTML', 'CSS'],
     url: 'https://sensational-mermaid-d7f311.netlify.app',
     repo: 'https://github.com/',
@@ -21,6 +21,7 @@ export const projects = [
     author: 'Nombre del estudiante',
     tags: ['JavaScript'],
     url: 'https://example.com',
+    repo: 'https://github.com/',
   },
   {
     title: 'Galería del colegio',
@@ -44,5 +45,6 @@ export const projects = [
     author: 'Nombre del estudiante',
     tags: ['HTML', 'CSS', 'JavaScript'],
     url: 'https://example.com',
+    repo: 'https://github.com/',
   },
 ]

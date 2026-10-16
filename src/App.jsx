@@ -1,6 +1,8 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Projects from './components/Projects'
+import Authors from './components/Authors'
+import './styles/theme.css'
 import './App.css'
 
 function App() {
@@ -10,6 +12,7 @@ function App() {
       <main>
         <Hero />
         <Projects />
+        <Authors/>
       </main>
     </>
   )

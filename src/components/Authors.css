@@ -1,0 +1,389 @@
+/* Autores: galería de retratos tipo acordeón sobre fondo blanco */
+
+.authors {
+  --au-gutter: clamp(20px, 4vw, 56px);
+  --au-r: 28px;
+  --au-notch: 22px;
+  --au-ease: var(--ease, cubic-bezier(0.2, 0, 0, 1));
+
+  background-color: var(--c-page, #ffffff);
+  color: var(--c-ink, #0b1a12);
+  padding: 0 var(--au-gutter) clamp(64px, 9vw, 120px);
+  scroll-margin-top: 12px;
+}
+
+.authors__inner {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* ---------- Encabezado (mismo ritmo que "Explora los proyectos") ---------- */
+
+.authors__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 40px;
+  padding-bottom: 28px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--c-ink, #0b1a12);
+}
+
+.authors__title {
+  margin: 0;
+  color: var(--c-ink, #0b1a12);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: clamp(2.75rem, 6.4vw, 5.5rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.authors__hint {
+  margin: 0 0 6px;
+  color: var(--c-muted, #4d5b53);
+  -webkit-text-fill-color: currentColor;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* ---------- Acordeón ---------- */
+
+.authors__panels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: clamp(440px, 62vh, 600px);
+  display: flex;
+  gap: 16px;
+}
+
+.portrait {
+  /* Colores del colegio por retrato: verde, blanco y rojo */
+  --p-bg: var(--c-green, #0e5236);
+  --p-fg: #ffffff;
+  --p-initials: var(--c-yellow, #f2c40c);
+
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--au-r);
+  background-color: var(--p-bg);
+  color: var(--p-fg);
+  transition: flex-grow 650ms var(--au-ease);
+}
+
+.portrait:nth-child(3n + 2) {
+  --p-bg: #f1efe8;
+  --p-fg: var(--c-ink, #0b1a12);
+  --p-initials: var(--c-green, #0e5236);
+}
+
+.portrait:nth-child(3n + 3) {
+  --p-bg: var(--c-red, #c8102e);
+  --p-fg: #ffffff;
+  --p-initials: #ffffff;
+}
+
+.portrait.is-active {
+  flex-grow: 3.2;
+}
+
+/* Botón invisible que cubre todo el retrato (clic, teclado) */
+.portrait__trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portrait.is-active .portrait__trigger {
+  cursor: default;
+}
+
+.portrait__trigger:focus-visible {
+  outline: 3px solid var(--c-yellow, #f2c40c);
+  outline-offset: -3px;
+}
+
+/* Foto o iniciales */
+.portrait__media {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.portrait__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  filter: grayscale(0.85) contrast(1.05);
+  scale: 1.04;
+  transition: filter 500ms ease-out, scale 900ms var(--au-ease);
+}
+
+.portrait.is-active .portrait__media img {
+  filter: none;
+  scale: 1;
+}
+
+/* Velo oscuro sobre las fotos de los retratos cerrados, para leer el nombre */
+.portrait:has(img)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0) 55%);
+  transition: opacity 400ms ease-out;
+  pointer-events: none;
+}
+
+.portrait.is-active:has(img)::after {
+  opacity: 0;
+}
+
+.portrait:has(img) {
+  --p-fg: #ffffff;
+}
+
+.portrait__initials {
+  color: var(--p-initials);
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: clamp(5rem, 12vw, 11rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+}
+
+/* Cerrado en computador: el nombre vertical reemplaza a las iniciales */
+@media (min-width: 761px) {
+  .portrait:not(.is-active) .portrait__initials {
+    opacity: 0;
+  }
+}
+
+.portrait__initials {
+  transition: font-size 650ms var(--au-ease), opacity 300ms ease-out;
+}
+
+/* Número arriba a la izquierda */
+.portrait__num {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 20px;
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--p-fg);
+  opacity: 0.85;
+}
+
+/* Nombre vertical (retrato cerrado) */
+.portrait__label {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 24px;
+  max-height: calc(100% - 90px);
+  overflow: hidden;
+  translate: -50% 0;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  color: var(--p-fg);
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity 250ms ease-out;
+}
+
+.portrait.is-active .portrait__label {
+  opacity: 0;
+}
+
+/* Ficha en una muesca blanca abajo a la izquierda (retrato abierto) */
+.portrait__info {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: 0;
+  max-width: calc(100% - 48px);
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 18px 26px 14px 4px;
+  border-top-right-radius: var(--au-notch);
+  background-color: var(--c-page, #ffffff);
+  color: var(--c-ink, #0b1a12);
+  opacity: 0;
+  translate: 0 12px;
+  pointer-events: none;
+  transition: opacity 150ms ease-out, translate 150ms ease-out;
+}
+
+.portrait.is-active .portrait__info {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 300ms ease-out 250ms, translate 300ms var(--au-ease) 250ms;
+}
+
+/* Curvas cóncavas que unen la muesca con la foto */
+.portrait__info::before,
+.portrait__info::after {
+  content: '';
+  position: absolute;
+  width: var(--au-notch);
+  height: var(--au-notch);
+  background: radial-gradient(
+    circle at 100% 0,
+    transparent calc(var(--au-notch) - 0.5px),
+    var(--c-page, #ffffff) var(--au-notch)
+  );
+  pointer-events: none;
+}
+
+.portrait__info::before {
+  left: 0;
+  top: calc(-1 * var(--au-notch));
+}
+
+.portrait__info::after {
+  right: calc(-1 * var(--au-notch));
+  bottom: 0;
+}
+
+.portrait__org {
+  padding: 7px 13px;
+  border-radius: 999px;
+  background-color: var(--c-yellow, #f2c40c);
+  color: var(--c-ink, #0b1a12);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.portrait__name {
+  margin: 4px 0 0;
+  color: var(--c-ink, #0b1a12);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.portrait__role {
+  margin: 0;
+  color: var(--c-muted, #4d5b53);
+  -webkit-text-fill-color: currentColor;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+/* Sin animaciones de tamaño si el usuario prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .portrait,
+  .portrait__initials,
+  .portrait__media img {
+    transition: none;
+  }
+
+  .portrait__info,
+  .portrait.is-active .portrait__info {
+    translate: 0 0;
+  }
+}
+
+/* ---------- Celular: acordeón vertical ---------- */
+
+@media (max-width: 760px) {
+  .authors__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .authors__panels {
+    height: auto;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .portrait {
+    flex: none;
+    height: 84px;
+    transition: height 550ms var(--au-ease);
+  }
+
+  .portrait.is-active {
+    height: min(118vw, 520px);
+  }
+
+  .portrait__num {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .portrait.is-active .portrait__num {
+    top: 18px;
+    translate: 0 0;
+  }
+
+  /* Cerrado: nombre en horizontal */
+  .portrait__label {
+    left: 64px;
+    bottom: auto;
+    top: 50%;
+    max-height: none;
+    max-width: calc(100% - 140px);
+    translate: 0 -50%;
+    writing-mode: horizontal-tb;
+    rotate: 0deg;
+    font-size: 1.5rem;
+  }
+
+  /* Sin foto: las iniciales se van a la derecha cuando está cerrado */
+  .portrait:not(.is-active):not(:has(img)) .portrait__media {
+    justify-items: end;
+    padding-right: 20px;
+  }
+
+  .portrait:not(.is-active) .portrait__initials {
+    font-size: 2.6rem;
+  }
+
+  .portrait__info {
+    max-width: calc(100% - 32px);
+  }
+
+  .portrait__name {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .portrait {
+    transition: none;
+  }
+}

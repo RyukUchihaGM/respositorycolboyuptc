@@ -1,0 +1,171 @@
+/* Tema compartido: fuentes y colores de todo el sitio.
+   Importa este archivo una sola vez en App.jsx:  import './styles/theme.css' */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Colores de marca: cambia aquí y se actualiza todo el sitio */
+  --c-green: #0e5236;      /* bloque principal (navbar + hero) */
+  --c-green-2: #1b6b47;    /* panel interior más claro */
+  --c-green-3: #c9e2d3;    /* tarjeta pálida dentro del hero */
+  --c-card: #e9f2ec;       /* fondo de las tarjetas de proyectos */
+  --c-yellow: #f2c40c;     /* acento: botones y títulos */
+  --c-red: #c8102e;
+  --c-ink: #0b1a12;        /* texto oscuro */
+  --c-muted: #4d5b53;
+  --c-page: #ffffff;       /* fondo de la página (las "muescas" usan este color) */
+  --c-focus: #0a84ff;
+
+  --f-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  --f-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --r-xl: 32px;            /* radio de los bloques grandes */
+}
+
+html {
+  background-color: var(--c-page);
+}
+
+body {
+  margin: 0;
+  background-color: var(--c-page);
+  color: var(--c-ink);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Botón píldora con relleno que crece al pasar el mouse (como en el ejemplo) */
+.pill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 6px 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--c-yellow);
+  color: var(--c-ink);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: scale 150ms ease-out;
+}
+
+.pill__icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--c-ink);
+  color: var(--c-yellow);
+  transition: rotate 500ms var(--ease);
+}
+
+/* Círculo blanco que se expande desde el ícono y llena la píldora */
+.pill::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  translate: 0 -50%;
+  border-radius: 999px;
+  background-color: #ffffff;
+  transition: width 500ms var(--ease), right 500ms var(--ease), height 500ms var(--ease);
+}
+
+@media (hover: hover) {
+  .pill:hover::before {
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pill:hover .pill__icon {
+    rotate: 45deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill::before,
+  .pill__icon {
+    transition-duration: 0ms;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pill:active {
+    scale: 0.96;
+  }
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 3px;
+}
+
+/* Botón circular amarillo con el mismo efecto */
+.round {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--c-yellow);
+  color: var(--c-ink);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: scale 150ms ease-out;
+}
+
+.round::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  scale: 0;
+  transition: scale 400ms var(--ease);
+}
+
+@media (hover: hover) {
+  .round:hover::before {
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .round:active {
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .round::before {
+    transition-duration: 0ms;
+  }
+}
+
+.round:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 3px;
+}

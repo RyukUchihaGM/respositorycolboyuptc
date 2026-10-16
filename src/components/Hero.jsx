@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { projects } from '../data/projects.js'
 import './Hero.css'
 
 // Reemplaza estas rutas por tus imágenes (ej: import img1 from '../assets/img1.jpg')
-// position (opcional): la parte de la foto que nunca se debe recortar en pantallas angostas.
-//   'center' (por defecto), 'center 30%' (un poco arriba), 'left center', '70% 50%', etc.
+// position (opcional): la parte de la foto que nunca se debe recortar.
+//   'center' (por defecto), 'center 30%' (un poco arriba), 'left center', etc.
 const slides = [
   { alt: 'Descripción de la imagen 1', src: 'https://scontent.fbog18-2.fna.fbcdn.net/v/t39.30808-6/474696062_2370749529956039_5633720331545667839_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1241&ctp=s2048x1241&_nc_cat=101&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=HzPs5L_ZPNkQ7kNvwEfKGdp&_nc_oc=Adqr9LR-EyplS-ho5PVO2lGIH4RlTjtf5ebfRqCAamllLSlFWWmbXFbxmU4HNyaMtQw&_nc_zt=23&_nc_ht=scontent.fbog18-2.fna&_nc_gid=MiYucWAVpxFYvPQqsJbSPQ&_nc_ss=7b289&oh=00_AQP1tG0t3p42JrVj3qlaanjtBvYubehFIvZruub3KJ5ufw&oe=6AD586A0' },
   { alt: 'Descripción de la imagen 2', src: 'https://www.uptc.edu.co/export/sites/default/universidad/modules/imag/2018/Sede_Centralx_UPTC__Ente_universitario_autoxnomox_de_caraxcter_nacionalx_estatal_y_puxblico._Fundada_en_1953_durante_la_presidencia_de_Gustavo_Rojas_Pinilla._Una_historia_de_presencia_institucional_y_tradici.JPG' },
@@ -12,6 +13,8 @@ const slides = [
 
 const AUTOPLAY_MS = 6000
 const SWIPE_THRESHOLD = 48
+
+const pad = (n) => String(n).padStart(2, '0')
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(
@@ -26,16 +29,44 @@ function usePrefersReducedMotion() {
   return reduced
 }
 
+const Icon = {
+  arrow: (
+    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 11 11 5M6 5h5v5" />
+    </svg>
+  ),
+  prev: (
+    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12.5 4.5 7 10l5.5 5.5" />
+    </svg>
+  ),
+  next: (
+    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7.5 4.5 13 10l-5.5 5.5" />
+    </svg>
+  ),
+  pause: (
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+      <rect x="3.5" y="2.5" width="3" height="11" rx="1" /><rect x="9.5" y="2.5" width="3" height="11" rx="1" />
+    </svg>
+  ),
+  play: (
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+      <path d="M5 3.2v9.6a.8.8 0 0 0 1.2.7l7.6-4.8a.8.8 0 0 0 0-1.4L6.2 2.5A.8.8 0 0 0 5 3.2Z" />
+    </svg>
+  ),
+}
+
 function Hero() {
   const [current, setCurrent] = useState(0)
   const [userPaused, setUserPaused] = useState(false)
-  const [overDots, setOverDots] = useState(false)
+  const [hovered, setHovered] = useState(false)
   const [pageHidden, setPageHidden] = useState(false)
   const reducedMotion = usePrefersReducedMotion()
   const pointerStartX = useRef(null)
 
   const autoplay = !reducedMotion
-  const playing = autoplay && !userPaused && !overDots && !pageHidden
+  const playing = autoplay && !userPaused && !hovered && !pageHidden
 
   const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), [])
   const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), [])
@@ -46,13 +77,8 @@ function Hero() {
     return () => document.removeEventListener('visibilitychange', onVisibility)
   }, [])
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev() }
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); next() }
-  }
-
-  const handlePointerDown = (e) => { pointerStartX.current = e.clientX }
-  const handlePointerUp = (e) => {
+  const onPointerDown = (e) => { pointerStartX.current = e.clientX }
+  const onPointerUp = (e) => {
     if (pointerStartX.current === null) return
     const dx = e.clientX - pointerStartX.current
     pointerStartX.current = null
@@ -60,94 +86,114 @@ function Hero() {
     dx < 0 ? next() : prev()
   }
 
-  // Clic en el punto activo: pausa / reanuda. Clic en otro: va a esa imagen.
-  const handleDot = (i) => {
-    if (i === current) {
-      if (autoplay) setUserPaused((p) => !p)
-    } else {
-      setCurrent(i)
-    }
-  }
-
   return (
-    <section
-      id="inicio"
-      className="hero"
-      aria-roledescription="carrusel"
-      aria-label="Galería de imágenes"
-      tabIndex={0}
-      data-playing={playing}
-      data-paused={userPaused}
-      style={{ '--hero-interval': `${AUTOPLAY_MS}ms` }}
-      onKeyDown={handleKeyDown}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={() => { pointerStartX.current = null }}
-    >
-      <div className="hero__media" aria-live={playing ? 'off' : 'polite'}>
-        {slides.map((s, i) => (
-          <figure
-            key={s.src}
-            className={`hero__slide${i === current ? ' is-active' : ''}`}
-            role="group"
-            aria-roledescription="diapositiva"
-            aria-label={`${i + 1} de ${slides.length}`}
-            aria-hidden={i !== current}
-          >
-            <img
-              src={s.src}
-              alt={s.alt}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-              draggable="false"
-              style={{ objectPosition: s.position ?? 'center' }}
-            />
-          </figure>
-        ))}
-      </div>
+    <section id="inicio" className="hero" aria-labelledby="hero-title">
+      {/* Nombre gigante de lado a lado, como el del ejemplo */}
+      <svg className="hero__wordmark" viewBox="0 0 1000 118" preserveAspectRatio="none" aria-hidden="true">
+        <text x="-4.12" y="115.4" textLength="1003.2" lengthAdjust="spacingAndGlyphs">REPOSITORIO COLBOY</text>
+      </svg>
 
-      <div className="hero__shade" aria-hidden="true" />
+      <div className="hero__grid">
+        <div className="hero__intro">
+          <h1 id="hero-title" className="hero__title">Proyectos web<br />de clase</h1>
+          <p className="hero__text">
+            Páginas creadas por estudiantes del Colegio de Boyacá. Ábrelas, navégalas y mira cómo están hechas.
+          </p>
+          <a href="#proyectos" className="pill">
+            Ver proyectos
+            <span className="pill__icon">{Icon.arrow}</span>
+          </a>
+        </div>
 
-      <nav
-        className="hero__dots"
-        aria-label="Seleccionar imagen"
-        onMouseEnter={() => setOverDots(true)}
-        onMouseLeave={() => setOverDots(false)}
-        onFocus={() => setOverDots(true)}
-        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOverDots(false) }}
-      >
-        {slides.map((s, i) => {
-          const active = i === current
-          const label = active
-            ? autoplay
-              ? userPaused ? `Imagen ${i + 1}, reanudar presentación` : `Imagen ${i + 1}, pausar presentación`
-              : `Imagen ${i + 1}`
-            : `Ir a la imagen ${i + 1}`
-          return (
-            <button
+        {/* Tarjeta amarilla: total + cinta con los nombres de los proyectos */}
+        <a href="#proyectos" className="hero__stat" aria-label={`Ver los ${projects.length} proyectos publicados`}>
+          <div className="hero__stat-top">
+            <span className="hero__stat-num">{pad(projects.length)}</span>
+            <span className="hero__stat-label">proyectos<br />publicados</span>
+            <span className="hero__stat-go" aria-hidden="true">{Icon.arrow}</span>
+          </div>
+          <div className="hero__ticker" aria-hidden="true">
+            {/* La lista va dos veces para que la cinta corra sin cortes */}
+            <div className="hero__ticker-track">
+              {[0, 1].map((copy) =>
+                projects.map((p) => (
+                  <span key={`${copy}-${p.title}`} className="hero__ticker-item">{p.title}</span>
+                ))
+              )}
+            </div>
+          </div>
+        </a>
+
+        <div
+          className="hero__media"
+          aria-roledescription="carrusel"
+          aria-label="Fotos del colegio"
+          data-playing={playing}
+          style={{ '--hero-interval': `${AUTOPLAY_MS}ms` }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={() => { pointerStartX.current = null }}
+        >
+          {slides.map((s, i) => (
+            <figure
               key={s.src}
-              type="button"
-              className={`hero__dot${active ? ' is-active' : ''}`}
-              aria-label={label}
-              aria-current={active ? 'true' : undefined}
-              onClick={() => handleDot(i)}
+              className={`hero__slide${i === current ? ' is-active' : ''}`}
+              role="group"
+              aria-roledescription="diapositiva"
+              aria-label={`${i + 1} de ${slides.length}`}
+              aria-hidden={i !== current}
             >
-              <svg className="hero__ring" viewBox="0 0 32 32" aria-hidden="true">
-                <circle className="hero__ring-track" cx="16" cy="16" r="12" pathLength="100" />
-                <circle
-                  className={`hero__ring-progress${active && autoplay ? ' is-timer' : ''}`}
-                  cx="16"
-                  cy="16"
-                  r="12"
-                  pathLength="100"
-                  onAnimationEnd={active && autoplay ? next : undefined}
-                />
-              </svg>
-              <span className="hero__dot-core" />
+              <img
+                src={s.src}
+                alt={s.alt}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                draggable="false"
+                style={{ objectPosition: s.position ?? 'center' }}
+              />
+            </figure>
+          ))}
+
+          {/* Controles en una muesca verde recortada de la foto */}
+          <div className="hero__controls">
+            <span className="hero__count" aria-live={playing ? 'off' : 'polite'}>
+              {pad(current + 1)}<span>/{pad(slides.length)}</span>
+            </span>
+            {autoplay && (
+              <button
+                type="button"
+                className="hero__pause"
+                onClick={() => setUserPaused((p) => !p)}
+                aria-label={userPaused ? 'Reanudar fotos' : 'Pausar fotos'}
+              >
+                {userPaused ? Icon.play : Icon.pause}
+              </button>
+            )}
+            <button type="button" className="round" onClick={prev} aria-label="Foto anterior">
+              {Icon.prev}
             </button>
-          )
-        })}
-      </nav>
+            <span className="hero__next">
+              {autoplay && (
+                <svg className="hero__ring" viewBox="0 0 60 60" aria-hidden="true">
+                  <circle
+                    key={current}
+                    cx="30"
+                    cy="30"
+                    r="28"
+                    pathLength="100"
+                    onAnimationEnd={next}
+                  />
+                </svg>
+              )}
+              <button type="button" className="round" onClick={next} aria-label="Foto siguiente">
+                {Icon.next}
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

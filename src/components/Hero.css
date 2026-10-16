@@ -1,31 +1,207 @@
 .hero {
-  --hero-ease: cubic-bezier(0.2, 0, 0, 1);
-  --hero-fade: 1200ms;
-  --hero-focus: #0a84ff;
-  --hero-edge: clamp(16px, 3vw, 44px);
+  --r: var(--r-xl, 32px);
+  --gap: 16px;
+  --pad: clamp(16px, 2.5vw, 28px);
+  --fade: 1100ms;
 
-  position: relative;
-  isolation: isolate;
+  margin: 0 12px;
+  padding: var(--pad);
+  /* esquina superior derecha recta: ahí se une con la barra de la navbar */
+  border-radius: var(--r) 0 var(--r) var(--r);
+  background-color: var(--c-green);
+  color: #ffffff;
+  scroll-margin-top: 12px;
+}
+
+/* ---------- Nombre gigante ---------- */
+
+.hero__wordmark {
+  display: block;
   width: 100%;
-  height: 100vh;
-  height: 100svh;
-  min-height: 520px;
+  height: auto;
+  aspect-ratio: 1000 / 118;
+  margin: 8px 0 calc(var(--gap) + 8px);
+  overflow: visible;
+}
+
+.hero__wordmark text {
+  fill: #ffffff;
+  font-family: var(--f-display);
+  font-size: 131.8px;
+}
+
+/* ---------- Grilla ---------- */
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  grid-template-rows: auto auto;
+  gap: var(--gap);
+}
+
+/* Panel de texto (verde más claro) */
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: calc(var(--r) - 8px);
+  background-color: var(--c-green-2);
+}
+
+.hero__title {
+  margin: 0;
+  color: var(--c-yellow);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+  font-family: var(--f-display);
+  font-size: clamp(2.6rem, 5.2vw, 4.75rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.hero__text {
+  max-width: 30rem;
+  margin: 0 0 8px;
+  color: rgb(255 255 255 / 0.85);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Tarjeta amarilla con el total y una cinta de proyectos */
+.hero__stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  background-color: #0a1a4a;
-  touch-action: pan-y;
+  border-radius: calc(var(--r) - 8px);
+  background-color: var(--c-yellow);
+  color: var(--c-ink);
+  text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  transition: scale 150ms ease-out;
 }
 
-.hero:focus-visible {
-  outline: 3px solid var(--hero-focus);
-  outline-offset: -3px;
+.hero__stat-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 16px 14px 24px;
 }
 
-/* ---------- Imágenes: fundido + acercamiento lento ---------- */
+.hero__stat-num {
+  font-family: var(--f-display);
+  font-size: clamp(4.5rem, 7.5vw, 6.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__stat-label {
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.hero__stat-go {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  margin-left: auto;
+  align-self: flex-start;
+  border-radius: 50%;
+  background-color: var(--c-ink);
+  color: var(--c-yellow);
+  transition: rotate 500ms var(--ease);
+}
+
+/* Cinta con los nombres de los proyectos */
+.hero__ticker {
+  overflow: hidden;
+  padding: 11px 0;
+  background-color: var(--c-ink);
+  color: var(--c-yellow);
+}
+
+.hero__ticker-track {
+  display: flex;
+  width: max-content;
+}
+
+.hero__ticker-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Separador: estrella de cuatro puntas */
+.hero__ticker-item::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  margin: 0 18px;
+  background-color: #ffffff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__ticker-track {
+    animation: hero-ticker 28s linear infinite;
+  }
+
+  .hero__stat:hover .hero__ticker-track,
+  .hero__stat:focus-visible .hero__ticker-track {
+    animation-play-state: paused;
+  }
+
+  .hero__stat:active {
+    scale: 0.99;
+  }
+}
+
+@keyframes hero-ticker {
+  from { translate: 0 0; }
+  to   { translate: -50% 0; }
+}
+
+@media (hover: hover) {
+  .hero__stat:hover .hero__stat-go {
+    rotate: 45deg;
+  }
+}
+
+.hero__stat:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ---------- Fotos ---------- */
 
 .hero__media {
-  position: absolute;
-  inset: 0;
+  --tab-r: 24px;
+
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 360px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: calc(var(--r) - 8px);
+  background-color: var(--c-green-2);
+  touch-action: pan-y;
 }
 
 .hero__slide {
@@ -33,7 +209,7 @@
   inset: 0;
   margin: 0;
   opacity: 0;
-  transition: opacity var(--hero-fade) var(--hero-ease);
+  transition: opacity var(--fade) var(--ease);
 }
 
 .hero__slide.is-active {
@@ -53,7 +229,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .hero__slide img {
     scale: 1.08;
-    transition: scale 0s linear var(--hero-fade);
+    transition: scale 0s linear var(--fade);
   }
 
   .hero__slide.is-active img {
@@ -62,111 +238,116 @@
   }
 }
 
-/* Sombra muy suave a la derecha para que los puntos se lean sobre fotos claras */
-.hero__shade {
+/* Muesca verde con los controles, abajo a la derecha */
+.hero__controls {
   position: absolute;
-  inset: 0;
   z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(to left, rgb(4 10 32 / 0.35) 0%, rgb(4 10 32 / 0) 22%),
-    linear-gradient(to bottom, rgb(4 10 32 / 0.3) 0%, rgb(4 10 32 / 0) 25%);
-}
-
-/* ---------- Puntos verticales ---------- */
-
-.hero__dots {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  right: var(--hero-edge);
-  translate: 0 -50%;
+  right: 0;
+  bottom: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  padding: 12px 0 0 18px;
+  border-top-left-radius: var(--tab-r);
+  background-color: var(--c-green);
 }
 
-.hero__dot {
-  position: relative;
-  width: 32px; /* área de clic; lo visible es mucho más pequeño */
-  height: 32px;
+/* Curvas cóncavas que unen la muesca con la foto */
+.hero__controls::before,
+.hero__controls::after {
+  content: '';
+  position: absolute;
+  width: var(--tab-r);
+  height: var(--tab-r);
+  background: radial-gradient(
+    circle at 0 0,
+    transparent calc(var(--tab-r) - 0.5px),
+    var(--c-green) var(--tab-r)
+  );
+  pointer-events: none;
+}
+
+.hero__controls::before {
+  right: 0;
+  top: calc(-1 * var(--tab-r));
+}
+
+.hero__controls::after {
+  left: calc(-1 * var(--tab-r));
+  bottom: 0;
+}
+
+.hero__count {
+  margin-right: 4px;
+  font-family: var(--f-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__count span {
+  color: rgb(255 255 255 / 0.5);
+  font-size: 1rem;
+}
+
+.hero__pause {
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: none;
+  background-color: rgb(255 255 255 / 0.1);
   color: #ffffff;
   cursor: pointer;
+  transition: background-color 150ms ease-out;
 }
 
-/* Punto central */
-.hero__dot-core {
+@media (hover: hover) {
+  .hero__pause:hover {
+    background-color: rgb(255 255 255 / 0.2);
+  }
+}
+
+.hero__pause:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+/* Anillo de tiempo alrededor del botón "siguiente" */
+.hero__next {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+}
+
+.hero__next .round {
   grid-area: 1 / 1;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: currentColor;
-  opacity: 0.45;
-  box-shadow: 0 0 8px rgb(0 0 0 / 0.35);
-  transition-property: opacity, scale;
-  transition-duration: 300ms;
-  transition-timing-function: var(--hero-ease);
 }
 
-.hero__dot.is-active .hero__dot-core {
-  opacity: 1;
-  scale: 1.17;
-}
-
-/* Anillo: pista tenue + trazo que se dibuja como temporizador */
 .hero__ring {
   grid-area: 1 / 1;
-  width: 32px;
-  height: 32px;
-  overflow: visible;
-  rotate: -90deg; /* el trazo arranca arriba */
-  opacity: 0;
-  scale: 0.5;
-  transition-property: opacity, scale;
-  transition-duration: 400ms;
-  transition-timing-function: var(--hero-ease);
-}
-
-.hero__dot.is-active .hero__ring {
-  opacity: 1;
-  scale: 1;
+  width: 60px;
+  height: 60px;
+  rotate: -90deg;
+  pointer-events: none;
 }
 
 .hero__ring circle {
   fill: none;
-  stroke: currentColor;
-  stroke-width: 1.25;
-  vector-effect: non-scaling-stroke;
-}
-
-.hero__ring-track {
-  opacity: 0.28;
-}
-
-.hero__ring-progress {
+  stroke: var(--c-yellow);
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-dasharray: 100;
-  stroke-dashoffset: 0; /* sin autoplay: anillo completo */
+  stroke-dashoffset: 100;
+  animation: hero-ring var(--hero-interval, 6000ms) linear forwards;
 }
 
-.hero__ring-progress.is-timer {
-  animation: hero-ring var(--hero-interval, 6000ms) linear both;
-}
-
-.hero[data-playing='false'] .hero__ring-progress.is-timer {
+.hero__media[data-playing='false'] .hero__ring circle {
   animation-play-state: paused;
-}
-
-/* Pausado por el usuario: el anillo se atenúa como señal fija */
-.hero[data-paused='true'] .hero__ring-progress {
-  opacity: 0.5;
 }
 
 @keyframes hero-ring {
@@ -174,81 +355,135 @@
   to   { stroke-dashoffset: 0; }
 }
 
-@media (hover: hover) {
-  .hero__dot:not(.is-active):hover .hero__dot-core {
-    opacity: 0.9;
+/* ---------- Tablet ---------- */
+
+@media (max-width: 960px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero__dot:not(:disabled):active .hero__dot-core {
-    scale: 0.96;
-  }
-}
-
-.hero__dot:focus-visible {
-  outline: 2px solid var(--hero-focus);
-  outline-offset: 2px;
-}
-
-@media (forced-colors: active) {
-  .hero__dot-core { background-color: ButtonText; }
-  .hero__ring circle { stroke: ButtonText; }
-}
-
-/* ---------- Responsive: el alto se adapta a la pantalla ---------- */
-
-/* Tablet (vertical u horizontal): proporción panorámica en vez de pantalla completa,
-   así la foto horizontal se ve casi entera sin recortes fuertes */
-@media (max-width: 1024px) {
-  .hero {
-    height: auto;
-    aspect-ratio: 16 / 10;
-    max-height: 100svh;
-    min-height: 420px;
-  }
-}
-
-/* Móvil */
-@media (max-width: 640px) {
-  .hero {
-    --hero-edge: 8px;
+  .hero__media {
+    grid-column: auto;
+    grid-row: auto;
+    order: 2;
+    min-height: 0;
     aspect-ratio: 4 / 3;
-    min-height: 300px;
   }
 
-  .hero__dots {
-    gap: 0;
-  }
-
-  .hero__dot {
-    width: 28px;
-    height: 28px;
-  }
-
-  .hero__ring {
-    width: 26px;
-    height: 26px;
-  }
-
-  .hero__dot-core {
-    width: 5px;
-    height: 5px;
+  .hero__stat {
+    order: 3;
   }
 }
 
-/* Móvil en horizontal (pantalla baja): ocupa toda la altura disponible */
-@media (max-height: 500px) and (orientation: landscape) {
+/* ---------- Celular ---------- */
+
+@media (max-width: 860px) {
   .hero {
+    --r: 24px;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    --gap: 10px;
+  }
+
+  .hero__media {
+    --tab-r: 18px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .hero__controls {
+    gap: 4px;
+    padding: 8px 0 0 12px;
+  }
+
+  .hero__count {
+    display: none;
+  }
+
+  .hero__next,
+  .hero__ring {
+    width: 56px;
+    height: 56px;
+  }
+
+  .hero__stat-top {
+    padding: 14px 12px 12px 18px;
+    gap: 14px;
+  }
+
+  .hero__stat-go {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------- Escritorio: el hero ocupa exactamente la primera pantalla ---------- */
+
+@media (min-width: 961px) and (min-height: 560px) {
+  .hero {
+    /* alto de la ventana menos la navbar (12px + 84px) y el margen inferior (12px) */
+    box-sizing: border-box;
+    height: calc(100svh - 108px);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    --pad: clamp(14px, 2.4vh, 28px);
+    --gap: clamp(10px, 1.8vh, 16px);
+  }
+
+  /* El nombre gigante se limita también por el alto de la pantalla */
+  /* Siempre de borde a borde. En pantallas bajas se aplana un poco (como máximo
+     un 10–15 %) para dejar espacio al resto; a simple vista no se nota. */
+  .hero__wordmark {
+    flex: none;
+    width: 100%;
     aspect-ratio: auto;
-    height: 100svh;
+    height: min(calc((100vw - 24px - 2 * var(--pad)) * 0.118), 21svh);
+    margin: 0.4svh 0 calc(var(--gap) + 0.4svh);
+  }
+
+  .hero__grid {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .hero__media {
     min-height: 0;
   }
-}
 
-/* Acercamiento más sutil en pantallas pequeñas para no recortar de más */
-@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
-  .hero__slide img {
-    scale: 1.04;
+  .hero__intro {
+    min-height: 0;
+    justify-content: center;
+    gap: clamp(10px, 2vh, 18px);
+    padding: clamp(16px, 3.2vh, 36px) clamp(20px, 2.6vw, 36px);
+  }
+
+  .hero__title {
+    font-size: clamp(1.9rem, min(5.2vw, 7.6svh), 4.75rem);
+  }
+
+  .hero__text {
+    font-size: clamp(0.9rem, 1.9svh, 1.05rem);
+  }
+
+  .hero__stat-top {
+    padding-block: clamp(8px, 1.6svh, 16px) clamp(6px, 1.4svh, 14px);
+  }
+
+  .hero__stat-num {
+    font-size: clamp(2.6rem, min(7.5vw, 9.5svh), 6.5rem);
+  }
+
+  .hero__stat-label {
+    font-size: clamp(1.2rem, min(2.4vw, 3.6svh), 2.1rem);
+  }
+
+  .hero__ticker {
+    padding-block: clamp(7px, 1.2svh, 11px);
   }
 }
