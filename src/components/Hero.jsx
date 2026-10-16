@@ -89,15 +89,20 @@ function Hero() {
   return (
     <section id="inicio" className="hero" aria-labelledby="hero-title">
       {/* Nombre gigante de lado a lado, como el del ejemplo */}
-      <svg className="hero__wordmark" viewBox="0 0 1000 118" preserveAspectRatio="none" aria-hidden="true">
-        <text x="-4.12" y="115.4" textLength="1003.2" lengthAdjust="spacingAndGlyphs">REPOSITORIO COLBOY</text>
-      </svg>
+      {/* Título principal de la página (lo que Google toma como tema).
+          El texto real va oculto a la vista y el SVG es solo el dibujo. */}
+      <h1 className="hero__h1">
+        <span className="hero__sr">Repositorio Colboy: proyectos web del Colegio de Boyacá</span>
+        <svg className="hero__wordmark" viewBox="0 0 1000 118" preserveAspectRatio="none" aria-hidden="true">
+          <text x="-4.12" y="115.4" textLength="1003.2" lengthAdjust="spacingAndGlyphs">REPOSITORIO COLBOY</text>
+        </svg>
+      </h1>
 
       <div className="hero__grid">
         <div className="hero__intro">
-          <h1 id="hero-title" className="hero__title">Proyectos web<br />de clase</h1>
+          <h2 id="hero-title" className="hero__title">Proyectos web<br />de clase</h2>
           <p className="hero__text">
-            Páginas creadas por estudiantes del Colegio de Boyacá. Ábrelas, navégalas y mira cómo están hechas.
+            Páginas creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja. Ábrelas, navégalas y mira cómo están hechas.
           </p>
           <a href="#proyectos" className="pill">
             Ver proyectos

@@ -13,7 +13,23 @@
   scroll-margin-top: 12px;
 }
 
-/* ---------- Nombre gigante ---------- */
+/* ---------- Nombre gigante (dentro del h1) ---------- */
+
+.hero__h1 {
+  flex: none;
+  margin: 0;
+  font-size: inherit;
+  line-height: 0;
+}
+
+.hero__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .hero__wordmark {
   display: block;

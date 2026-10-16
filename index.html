@@ -6,35 +6,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- ============ Básico (Google y pestaña del navegador) ============ -->
-  <title>Repositorio Colboy</title>
+  <!-- El título es lo que más pesa en Google: lleva las palabras que la gente busca -->
+  <title>Repositorio Colboy | Proyectos web del Colegio de Boyacá</title>
   <meta name="description"
-    content="Repositorio de páginas web desarrolladas durante las clases, donde se recopilan proyectos, prácticas y ejercicios realizados para aplicar y fortalecer conocimientos en desarrollo web." />
-  <meta name="author" content="Fernando Espinosa & Rosa Elena Arevalo" />
+    content="Repositorio Colboy: páginas web creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja, con acompañamiento de la UPTC. Explora sus proyectos de HTML, CSS y JavaScript." />
+  <meta name="author" content="Fernando Espinosa, Rosa Elena Arévalo y Adriana Sandoval" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://respositorycolboyuptc.vercel.app/" />
 
   <!-- Íconos -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#0e5236" />
 
   <!-- ============ Open Graph (WhatsApp, Facebook, LinkedIn, Discord) ============ -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_CO" />
   <meta property="og:site_name" content="Repositorio Colboy" />
-  <meta property="og:title" content="Repositorio Colboy" />
-  <meta property="og:description" content="Repositorio de páginas web desarrolladas durante las clases, donde se recopilan proyectos, prácticas y ejercicios realizados para aplicar y fortalecer conocimientos en desarrollo web." />
+  <meta property="og:title" content="Repositorio Colboy | Proyectos web del Colegio de Boyacá" />
+  <meta property="og:description" content="Páginas web creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja. Ábrelas, navégalas y mira cómo están hechas." />
   <meta property="og:url" content="https://respositorycolboyuptc.vercel.app/" />
-  <!-- La imagen debe ser una URL completa (con https://), no una ruta relativa -->
   <meta property="og:image" content="https://respositorycolboyuptc.vercel.app/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Descripción de la imagen de vista previa" />
+  <meta property="og:image:alt" content="Repositorio Colboy, proyectos web del Colegio de Boyacá" />
 
+  <!-- ============ Datos estructurados: le dicen a Google cómo se llama el sitio
+       y sus otros nombres, y que trata sobre el Colegio de Boyacá ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://respositorycolboyuptc.vercel.app/#website",
+        "url": "https://respositorycolboyuptc.vercel.app/",
+        "name": "Repositorio Colboy",
+        "alternateName": [
+          "Colboy",
+          "Repositorio Colegio de Boyacá",
+          "Proyectos web Colegio de Boyacá",
+          "Repositorio Colboy UPTC"
+        ],
+        "inLanguage": "es-CO"
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://respositorycolboyuptc.vercel.app/#page",
+        "url": "https://respositorycolboyuptc.vercel.app/",
+        "name": "Repositorio Colboy | Proyectos web del Colegio de Boyacá",
+        "description": "Páginas web creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja, con acompañamiento de la UPTC.",
+        "isPartOf": { "@id": "https://respositorycolboyuptc.vercel.app/#website" },
+        "about": {
+          "@type": "HighSchool",
+          "name": "Colegio de Boyacá",
+          "alternateName": "Colboy",
+          "url": "https://www.colboy.edu.co",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tunja",
+            "addressRegion": "Boyacá",
+            "addressCountry": "CO"
+          }
+        },
+        "author": [
+          { "@type": "Person", "name": "Fernando Espinosa", "jobTitle": "Docente en formación" },
+          { "@type": "Person", "name": "Rosa Elena Arévalo", "jobTitle": "Docente directora de práctica" },
+          { "@type": "Person", "name": "Adriana Sandoval", "jobTitle": "Docente directora" }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
+
+  <!-- Texto de respaldo: lo leen los buscadores que no ejecutan JavaScript -->
+  <noscript>
+    <h1>Repositorio Colboy: proyectos web del Colegio de Boyacá</h1>
+    <p>Páginas web creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja, con acompañamiento de la UPTC.</p>
+  </noscript>
+
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
