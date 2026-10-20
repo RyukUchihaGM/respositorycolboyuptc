@@ -1,6 +1,6 @@
 export const projects = [
   {
-    title: 'Landing de cafetería',
+    title: 'MobileStore',
     description: 'Página de presentación para un negocio local con menú, horarios y ubicación.',
     author: ['Nicolle Mariana Ladino Casallas'],
     course: '10-06',
@@ -9,7 +9,7 @@ export const projects = [
     repo: 'https://github.com/RyukUchihaGM/proyectos-colboy/tree/main/CellstorePage',
   },
   {
-    title: 'Portafolio personal',
+    title: 'Sombra&Sabor',
     description: 'Sitio con presentación, habilidades y proyectos, adaptable a celular.',
     author: 'Maria Kamila Gómez Sotelo',
     course: '10-05',
@@ -18,7 +18,7 @@ export const projects = [
     repo: 'https://github.com/RyukUchihaGM/proyectos-colboy/tree/main/TunjaPage',
   },
   {
-    title: 'Calculadora de notas',
+    title: 'TerraWiki',
     description: 'Calcula el promedio del periodo y la nota que falta para aprobar.',
     author: 'Sergio Alejandro Galindo Molina',
     course: '10-05',
