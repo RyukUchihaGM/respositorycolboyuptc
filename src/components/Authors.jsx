@@ -1,25 +1,29 @@
 import { useState } from 'react'
 import './Authors.css'
+import fotoFernando from '../assets/authors/fernando.jpeg'
+// Cuando tengas las otras fotos en src/assets/authors/, quita las dos barras (//)
+// de estas líneas y de las líneas "photo" de abajo. Revisa que la extensión coincida.
+// import fotoRosa from '../assets/authors/rosa.jpeg'
+// import fotoAdriana from '../assets/authors/adriana.jpeg'
 
-// Fotos: guárdalas en src/assets/authors/ (verticales, con la cara en el tercio superior)
-// e impórtalas aquí, por ejemplo:
-//   import fotoFernando from '../assets/authors/fernando.jpg'
-// Luego agrega  photo: fotoFernando  al docente. Sin foto se muestran sus iniciales.
 const authors = [
   {
     name: 'Fernando Espinosa',
     role: 'Docente en formación',
     org: 'UPTC',
+    photo: fotoFernando,
   },
   {
     name: 'Rosa Elena Arévalo',
     role: 'Docente directora de práctica',
     org: 'Colegio de Boyacá',
+    // photo: fotoRosa,
   },
   {
     name: 'Adriana Sandoval',
     role: 'Docente directora',
     org: 'UPTC',
+    // photo: fotoAdriana,
   },
 ]
 
@@ -63,7 +67,12 @@ function Authors() {
 
                 <div className="portrait__media" aria-hidden="true">
                   {a.photo ? (
-                    <img src={a.photo} alt="" loading="lazy" decoding="async" />
+                    <>
+                      {/* Fondo: la misma foto desenfocada para rellenar el espacio */}
+                      <img className="portrait__bg" src={a.photo} alt="" loading="lazy" decoding="async" />
+                      {/* Foto completa */}
+                      <img className="portrait__photo" src={a.photo} alt="" loading="lazy" decoding="async" />
+                    </>
                   ) : (
                     <span className="portrait__initials">{initialsOf(a.name)}</span>
                   )}

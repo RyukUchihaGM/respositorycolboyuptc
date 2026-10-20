@@ -140,6 +140,42 @@
   scale: 1;
 }
 
+/* Fondo desenfocado: solo se ve cuando el retrato está abierto en computador */
+.portrait__media img.portrait__bg,
+.portrait.is-active .portrait__media img.portrait__bg {
+  position: absolute;
+  inset: 0;
+  filter: blur(28px) saturate(1.1) brightness(0.9);
+  scale: 1.2;
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+/* La foto ocupa exactamente el alto y ancho del retrato */
+.portrait__media img.portrait__photo {
+  position: absolute;
+  inset: 0;
+}
+
+@media (min-width: 761px) {
+  /* Abierto: la foto se ve completa (sin recortar) alineada a la derecha */
+  .portrait.is-active .portrait__media img.portrait__photo {
+    inset: 0 6% 0 auto;      /* pegada a la derecha, con todo el alto */
+    width: auto;
+    height: 100%;
+    max-width: 70%;
+    object-fit: cover;
+    object-position: center top;
+    /* bordes laterales difuminados para fundirse con el fondo */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+  }
+
+  .portrait.is-active .portrait__media img.portrait__bg {
+    opacity: 1;
+  }
+}
+
 /* Velo oscuro sobre las fotos de los retratos cerrados, para leer el nombre */
 .portrait:has(img)::after {
   content: '';
