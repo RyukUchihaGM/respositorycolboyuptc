@@ -172,7 +172,10 @@ function ProjectCard({ project, onOpen }) {
               ))}
             </span>
           </div>
-          <ul className="project__tags" aria-label="Tecnologías">
+          <ul className="project__tags" aria-label="Curso y tecnologías">
+            {project.course && (
+              <li className="project__tag project__tag--course">Curso {project.course}</li>
+            )}
             {project.tags.map((t) => (
               <li key={t} className="project__tag">{t}</li>
             ))}
@@ -343,7 +346,7 @@ function Projects() {
     return projects.filter((p) => {
       if (filter !== ALL && !p.tags.includes(filter)) return false
       if (!q) return true
-      return fold(`${p.title} ${p.authors.join(' ')} ${p.description}`).includes(q)
+      return fold(`${p.title} ${p.authors.join(' ')} ${p.description} ${p.course ?? ''}`).includes(q)
     })
   }, [filter, query])
 

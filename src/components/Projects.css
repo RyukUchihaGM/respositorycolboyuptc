@@ -11,7 +11,7 @@
 }
 
 .projects__inner {
-  max-width: 1240px;
+  max-width: var(--container, 2200px); /* acompaña el ancho del hero en pantallas grandes */
   margin: 0 auto;
 }
 
@@ -66,8 +66,8 @@
      ancho disponible (contenedor − buscador − espacio) ÷ ancho del texto en Anton */
   font-size: clamp(
     2.5rem,
-    calc((min(100vw - 2 * var(--pj-gutter), 1240px) - 384px) / 9.6),
-    5.5rem
+    calc((min(100vw - 2 * var(--pj-gutter), var(--container, 2200px)) - 384px) / 9.6),
+    7rem
   );
   white-space: nowrap;
   font-weight: 400;
@@ -181,7 +181,8 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  /* Siempre filas de tres (verde, blanco, rojo); dos en tablet y una en celular */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -335,6 +336,13 @@
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1;
+}
+
+/* Curso: en amarillo para distinguirlo de las tecnologías */
+.project__tag--course {
+  background-color: var(--c-yellow, #f2c40c);
+  color: var(--c-ink, #0b1a12);
+  font-weight: 700;
 }
 
 /* Muesca blanca arriba a la derecha con los botones */
@@ -868,6 +876,27 @@
   .project { border-color: CanvasText; }
   .projects__chip[aria-pressed='true'],
   .page-modal__device[aria-checked='true'] { border: 2px solid Highlight; }
+}
+
+/* ---------- Columnas de la grilla según el ancho ---------- */
+
+@media (max-width: 1023px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 679px) {
+  .projects__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pantallas muy grandes: más aire entre tarjetas */
+@media (min-width: 1800px) {
+  .projects__grid {
+    gap: 28px;
+  }
 }
 
 /* ---------- Tablet ---------- */
