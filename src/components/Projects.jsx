@@ -43,6 +43,10 @@ const projects = rawProjects.map((p) => {
   return { ...p, url, domain: domainOf(url), authors: toList(p.authors ?? p.author) }
 })
 
+// Primeros sitios (etapa: 'antes'): máximo 3, se muestran aparte arriba
+const earlyProjects = projects.filter((p) => p.etapa === 'antes').slice(0, 3)
+const currentProjects = projects.filter((p) => p.etapa !== 'antes')
+
 /* ---------- Íconos ---------- */
 
 const Icon = {
@@ -330,20 +334,73 @@ function PageModal({ list, index, onIndex, onClose }) {
 
 /* ---------- Sección ---------- */
 
+/* ---------- Antes del acompañamiento: tres pantallas en abanico ---------- */
+
+function EarlySites({ list, onOpen }) {
+  if (!list.length) return null
+  return (
+    <div className="early" aria-labelledby="early-title">
+      <div className="early__intro">
+        <p className="early__kicker">Antes del acompañamiento</p>
+        <h3 id="early-title" className="early__title">El punto<br />de partida</h3>
+        <p className="early__text">
+          Las primeras páginas de los estudiantes. Desde aquí se les acompañó con conocimientos
+          de HTML y CSS para que comprendieran cómo se estructura una página web.
+        </p>
+
+        {/* Lo que aprendieron, dicho en código */}
+        <div className="early__code" aria-hidden="true">
+          <span className="early__line"><span className="c-tag">&lt;header&gt;</span><span className="c-note">título y menú</span></span>
+          <span className="early__line"><span className="c-tag">&lt;main&gt;</span><span className="c-note">contenido</span></span>
+          <span className="early__line early__line--in"><span className="c-tag">&lt;section&gt;</span><span className="c-note">partes</span></span>
+          <span className="early__line"><span className="c-tag">&lt;footer&gt;</span><span className="c-note">cierre</span></span>
+        </div>
+      </div>
+
+      <ul className="early__desk" data-count={list.length}>
+        {list.map((p, i) => (
+          <li key={`${p.title}-${p.url}`} className="early__item" style={{ '--i': i }}>
+            <button
+              type="button"
+              className="early__open"
+              onClick={() => onOpen(i)}
+              aria-label={`Ver ${p.title}, de ${p.authors.join(' y ')}`}
+            />
+            <div className="early__window" aria-hidden="true">
+              <span className="early__bar">
+                <span className="early__dots"><i /><i /><i /></span>
+                <span className="early__domain">{p.domain}</span>
+              </span>
+              <LivePreview project={p} />
+            </div>
+            <div className="early__label" aria-hidden="true">
+              <span className="early__num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="early__meta">
+                <span className="early__name">{p.title}</span>
+                <span className="early__author">{p.authors.join(' · ')}</span>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function Projects() {
   const [filter, setFilter] = useState(ALL)
   const [query, setQuery] = useState('')
-  const [openIndex, setOpenIndex] = useState(null)
+  const [open, setOpen] = useState(null) // { list, index }
 
   const tags = useMemo(() => {
     const counts = new Map()
-    projects.forEach((p) => p.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)))
-    return [[ALL, projects.length], ...counts]
+    currentProjects.forEach((p) => p.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)))
+    return [[ALL, currentProjects.length], ...counts]
   }, [])
 
   const visible = useMemo(() => {
     const q = fold(query.trim())
-    return projects.filter((p) => {
+    return currentProjects.filter((p) => {
       if (filter !== ALL && !p.tags.includes(filter)) return false
       if (!q) return true
       return fold(`${p.title} ${p.authors.join(' ')} ${p.description} ${p.course ?? ''}`).includes(q)
@@ -358,6 +415,17 @@ function Projects() {
   return (
     <section id="proyectos" className="projects" aria-labelledby="projects-title">
       <div className="projects__inner">
+        <EarlySites list={earlyProjects} onOpen={(index) => setOpen({ list: earlyProjects, index })} />
+
+        {earlyProjects.length > 0 && (
+          <p className="projects__after">
+            <span className="projects__after-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" /></svg>
+            </span>
+            <span><strong>Ahora:</strong> repositorios con acompañamiento del docente y uso pedagógico de la inteligencia artificial.</span>
+          </p>
+        )}
+
         <header className="projects__header">
           <h2 id="projects-title" className="projects__title">Explora los proyectos</h2>
           <label className="projects__search">
@@ -392,7 +460,7 @@ function Projects() {
         {visible.length > 0 ? (
           <ul className="projects__grid">
             {visible.map((p, i) => (
-              <ProjectCard key={`${p.title}-${p.url}`} project={p} onOpen={() => setOpenIndex(i)} />
+              <ProjectCard key={`${p.title}-${p.url}`} project={p} onOpen={() => setOpen({ list: visible, index: i })} />
             ))}
           </ul>
         ) : (
@@ -403,12 +471,12 @@ function Projects() {
         )}
       </div>
 
-      {openIndex !== null && visible[openIndex] && (
+      {open && open.list[open.index] && (
         <PageModal
-          list={visible}
-          index={openIndex}
-          onIndex={setOpenIndex}
-          onClose={() => setOpenIndex(null)}
+          list={open.list}
+          index={open.index}
+          onIndex={(index) => setOpen((o) => ({ ...o, index }))}
+          onClose={() => setOpen(null)}
         />
       )}
     </section>

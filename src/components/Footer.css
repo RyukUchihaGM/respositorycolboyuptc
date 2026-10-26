@@ -1,0 +1,173 @@
+/* Footer: bloque oscuro con la franja del colegio */
+
+.footer {
+  --ft-r: var(--r-xl, 32px);
+  --ft-pad: clamp(24px, 4vw, 56px);
+
+  position: relative;
+  overflow: hidden;
+  margin: 0 12px 12px;
+  border-radius: var(--ft-r);
+  background-color: var(--c-ink, #0b1a12);
+  color: #ffffff;
+}
+
+/* Franja verde, blanca y roja */
+.footer__flag {
+  display: flex;
+  width: 132px;
+  height: 6px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.footer__flag span {
+  flex: 1;
+}
+
+.footer__flag span:nth-child(1) { background-color: var(--c-green-2, #1b6b47); }
+.footer__flag span:nth-child(2) { background-color: #ffffff; }
+.footer__flag span:nth-child(3) { background-color: var(--c-red, #c8102e); }
+
+.footer__inner {
+  max-width: var(--container, 2200px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px clamp(24px, 5vw, 80px);
+  padding: clamp(40px, 6vw, 72px) var(--ft-pad) clamp(32px, 4vw, 48px);
+}
+
+.footer__brand {
+  margin: 0 0 18px;
+  color: var(--c-yellow, #f2c40c);
+  font-family: var(--f-display);
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.footer__text {
+  max-width: 36rem;
+  margin: 0;
+  color: rgb(255 255 255 / 0.78);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.footer__text strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.footer__label {
+  margin: 0 0 8px;
+  color: rgb(255 255 255 / 0.5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer__link {
+  padding: 4px 0;
+  color: #ffffff;
+  font-family: var(--f-display);
+  font-size: 1.6rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 150ms ease-out, translate 300ms var(--ease);
+}
+
+@media (hover: hover) {
+  .footer__link:hover {
+    color: var(--c-yellow, #f2c40c);
+    translate: 6px 0;
+  }
+}
+
+.footer__link:focus-visible {
+  outline: 2px solid var(--c-yellow, #f2c40c);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.footer__stat {
+  margin: 0;
+  color: rgb(255 255 255 / 0.78);
+  font-size: 1rem;
+}
+
+.footer__stat span {
+  margin-right: 8px;
+  color: #ffffff;
+  font-family: var(--f-display);
+  font-size: 2.4rem;
+  line-height: 1;
+  vertical-align: -0.12em;
+}
+
+.footer__bottom {
+  max-width: var(--container, 2200px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px var(--ft-pad) 22px;
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.footer__bottom p {
+  margin: 0;
+  color: rgb(255 255 255 / 0.55);
+  font-size: 0.88rem;
+}
+
+/* Tablet */
+@media (max-width: 860px) {
+  .footer {
+    --ft-r: 24px;
+    margin: 0 8px 8px;
+  }
+
+  .footer__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .footer__about {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Celular */
+@media (max-width: 480px) {
+  .footer {
+    --ft-r: 20px;
+    --ft-pad: 20px;
+  }
+
+  .footer__inner {
+    gap: 32px 20px;
+  }
+
+  .footer__link {
+    font-size: 1.4rem;
+  }
+
+  .footer__bottom p {
+    font-size: 0.8rem;
+  }
+}

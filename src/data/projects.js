@@ -1,4 +1,7 @@
+// Para que una página aparezca en "El punto de partida" (antes del acompañamiento)
+// agrégale  etapa: 'antes'  — se muestran máximo 3. Las demás van en la grilla normal.
 export const projects = [
+  // ---------- Repositorios actuales (grilla, sin límite) ----------
   {
     title: 'MobileStore',
     description: 'Página de presentación para un negocio local con menú, horarios y ubicación.',
@@ -22,7 +25,7 @@ export const projects = [
     description: 'Calcula el promedio del periodo y la nota que falta para aprobar.',
     author: 'Sergio Alejandro Galindo Molina',
     course: '10-05',
-    tags: ['HTML','CSS'],
+    tags: ['HTML', 'CSS'],
     url: 'https://singular-praline-b2d5d9.netlify.app',
     repo: 'https://github.com/RyukUchihaGM/proyectos-colboy/tree/main/TerrariaPage',
   },
@@ -50,6 +53,38 @@ export const projects = [
     author: 'Nombre del estudiante',
     course: '10-1',
     tags: ['HTML', 'CSS', 'JavaScript'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+
+  // ---------- Antes del acompañamiento (máximo 3) ----------
+  {
+    title: 'Primera página 1',
+    etapa: 'antes',
+    description: 'Primera versión hecha antes del acompañamiento.',
+    author: 'Nombre del estudiante',
+    course: '10-05',
+    tags: ['HTML', 'CSS'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Primera página 2',
+    etapa: 'antes',
+    description: 'Primera versión hecha antes del acompañamiento.',
+    author: 'Nombre del estudiante',
+    course: '10-05',
+    tags: ['HTML', 'CSS'],
+    url: 'https://example.com',
+    repo: 'https://github.com/',
+  },
+  {
+    title: 'Primera página 3',
+    etapa: 'antes',
+    description: 'Primera versión hecha antes del acompañamiento.',
+    author: 'Nombre del estudiante',
+    course: '10-06',
+    tags: ['HTML', 'CSS'],
     url: 'https://example.com',
     repo: 'https://github.com/',
   },

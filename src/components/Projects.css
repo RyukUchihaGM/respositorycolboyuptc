@@ -10,6 +10,16 @@
   scroll-margin-top: 12px;
 }
 
+/* Si la sección empieza con "El punto de partida", menos espacio arriba */
+/* Menos espacio arriba (antes del bloque) y abajo (antes de Autores) */
+.projects:has(.early) {
+  padding-top: clamp(16px, 2.5vw, 32px);
+}
+
+.projects {
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+
 .projects__inner {
   max-width: var(--container, 2200px); /* acompaña el ancho del hero en pantallas grandes */
   margin: 0 auto;
@@ -876,6 +886,396 @@
   .project { border-color: CanvasText; }
   .projects__chip[aria-pressed='true'],
   .page-modal__device[aria-checked='true'] { border: 2px solid Highlight; }
+}
+
+/* ---------- Antes del acompañamiento ---------- */
+
+.early {
+  --early-bg: #f1efe8;
+  --early-line: rgb(11 26 18 / 0.06);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: 32px clamp(32px, 5vw, 80px);
+  margin-bottom: clamp(24px, 3vw, 40px);
+  padding: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 56px);
+  overflow: hidden;
+  border-radius: var(--pj-radius);
+  /* hoja cuadriculada de cuaderno */
+  background-color: var(--early-bg);
+  background-image:
+    linear-gradient(var(--early-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--early-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+
+.early__kicker,
+.early__title,
+.early__text,
+.projects__after {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
+}
+
+.early__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  color: var(--c-red, #c8102e);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.early__kicker::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.early__title {
+  margin: 0 0 16px;
+  color: var(--c-ink, #0b1a12);
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: clamp(2.6rem, 4.6vw, 4.4rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.early__text {
+  max-width: 30rem;
+  margin: 0 0 22px;
+  color: var(--c-muted, #4d5b53);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Mini bloque de código */
+.early__code {
+  display: inline-grid;
+  max-width: 100%;
+  margin: 0;
+  padding: 16px 22px;
+  overflow-x: auto;
+  border-radius: 14px;
+  background-color: var(--c-ink, #0b1a12);
+  color: #ffffff;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  box-shadow: 0 18px 30px -18px rgb(11 26 18 / 0.6);
+  rotate: -1.5deg;
+}
+
+.early__line {
+  display: grid;
+  grid-template-columns: 7.5em auto;
+  white-space: nowrap;
+}
+
+.early__line--in {
+  padding-left: 1.2em;
+  grid-template-columns: 6.3em auto;
+}
+
+.early__code .c-tag {
+  color: var(--c-yellow, #f2c40c);
+}
+
+.early__code .c-note {
+  color: rgb(255 255 255 / 0.45);
+}
+
+.early__code .c-note::before {
+  content: '// ';
+}
+
+/* Escritorio con las pantallas en abanico */
+.early__desk {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: clamp(320px, 30vw, 440px);
+}
+
+.early__item {
+  --rot: calc((var(--i) - 1) * 7deg);
+  --x: calc(var(--i) * 24%);
+  --y: calc(var(--i) * 14px);
+
+  position: absolute;
+  top: calc(8% + var(--y));
+  left: var(--x);
+  width: 52%;
+  rotate: var(--rot);
+  transition:
+    rotate 450ms var(--ease, cubic-bezier(0.2, 0, 0, 1)),
+    translate 450ms var(--ease, cubic-bezier(0.2, 0, 0, 1)),
+    scale 450ms var(--ease, cubic-bezier(0.2, 0, 0, 1)),
+    opacity 300ms ease-out;
+}
+
+/* Si hay menos de 3, se centran */
+.early__desk[data-count='1'] .early__item { left: 24%; --rot: -2deg; }
+.early__desk[data-count='2'] .early__item { --x: calc(12% + var(--i) * 24%); }
+
+.early__window {
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(11 26 18 / 0.12),
+    0 24px 40px -20px rgb(11 26 18 / 0.45);
+}
+
+.early__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  padding: 0 12px;
+  background-color: #e9e6dc;
+}
+
+.early__dots {
+  display: flex;
+  gap: 5px;
+}
+
+.early__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--c-green-2, #1b6b47);
+}
+
+.early__dots i:nth-child(2) { background-color: #ffffff; }
+.early__dots i:nth-child(3) { background-color: var(--c-red, #c8102e); }
+
+.early__domain {
+  overflow: hidden;
+  color: var(--c-muted, #4d5b53);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.early__window .project__shot {
+  margin: 0;
+  border-radius: 0;
+}
+
+/* Etiqueta tipo nota pegada debajo de cada pantalla */
+.early__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  max-width: 92%;
+  margin: -14px 0 0 14px;
+  padding: 10px 16px 10px 10px;
+  position: relative;
+  border-radius: 12px;
+  background-color: var(--c-yellow, #f2c40c);
+  color: var(--c-ink, #0b1a12);
+  box-shadow: 0 8px 18px -10px rgb(11 26 18 / 0.5);
+  rotate: calc(var(--rot) * -0.6);
+  opacity: 0;
+  translate: 0 -6px;
+  transition: opacity 300ms ease-out, translate 300ms var(--ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+.early__num {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--c-ink, #0b1a12);
+  color: var(--c-yellow, #f2c40c);
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: 0.95rem;
+}
+
+.early__meta {
+  display: grid;
+  min-width: 0;
+}
+
+.early__name {
+  overflow: hidden;
+  font-family: var(--f-display, Impact, sans-serif);
+  font-size: 1.15rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.early__author {
+  overflow: hidden;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Botón invisible que cubre la pantalla y abre el modal */
+.early__open {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.early__open:focus-visible {
+  outline: 3px solid var(--pj-focus);
+  outline-offset: 4px;
+}
+
+/* La que está al frente (la del medio) muestra su nota desde el inicio */
+.early__desk:not(:has(.early__item:hover, .early__open:focus-visible)) .early__item:nth-child(2) .early__label,
+.early__desk[data-count='1'] .early__label {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.early__item:nth-child(2) {
+  z-index: 1;
+}
+
+/* Al pasar el mouse: la pantalla se endereza y sube, las otras se apagan */
+.early__item:hover,
+.early__item:has(.early__open:focus-visible) {
+  z-index: 3;
+  rotate: 0deg;
+  translate: 0 -16px;
+  scale: 1.05;
+}
+
+.early__item:hover .early__label,
+.early__item:has(.early__open:focus-visible) .early__label {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.early__desk:has(.early__item:hover, .early__open:focus-visible) .early__item:not(:hover):not(:has(.early__open:focus-visible)) {
+  opacity: 0.55;
+}
+
+/* Línea que conecta con los repositorios actuales */
+.projects__after {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  color: var(--c-muted, #4d5b53);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.projects__after strong {
+  color: var(--c-ink, #0b1a12);
+  font-weight: 700;
+}
+
+.projects__after-icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--c-green, #0e5236);
+  color: var(--c-yellow, #f2c40c);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .early__item,
+  .early__label {
+    transition: none;
+  }
+}
+
+/* Tablet y celular: las pantallas pasan a una fila deslizable */
+@media (max-width: 960px) {
+  .early {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .early__desk {
+    height: auto;
+    display: flex;
+    gap: 16px;
+    margin: 0 calc(-1 * clamp(28px, 4vw, 56px));
+    padding: 14px clamp(28px, 4vw, 56px) 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .early__desk::-webkit-scrollbar {
+    display: none;
+  }
+
+  .early__item,
+  .early__desk[data-count] .early__item {
+    position: relative;
+    top: auto;
+    left: auto;
+    flex: 0 0 min(78%, 420px);
+    width: auto;
+    scroll-snap-align: center;
+    rotate: calc((var(--i) - 1) * 1.5deg);
+  }
+
+  .early__item:hover,
+  .early__item:has(.early__open:focus-visible) {
+    translate: 0 -6px;
+    scale: 1;
+  }
+
+  .early__label,
+  .early__desk:has(.early__item:hover) .early__item .early__label {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .early__desk:has(.early__item:hover, .early__open:focus-visible) .early__item:not(:hover) {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .early {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  .early__desk {
+    margin: 0 -20px;
+    padding: 12px 20px 18px;
+  }
+
+  .early__code {
+    font-size: 0.8rem;
+  }
 }
 
 /* ---------- Columnas de la grilla según el ancho ---------- */
