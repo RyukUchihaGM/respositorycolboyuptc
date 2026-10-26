@@ -8,6 +8,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Red de seguridad: nada puede ensanchar la página hacia los lados en celular */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 /* Anula los estilos por defecto de Vite (index.css) que limitaban el ancho */
 body {
   display: block;

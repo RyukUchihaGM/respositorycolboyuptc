@@ -888,7 +888,7 @@
 
 @media (max-width: 679px) {
   .projects__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

@@ -39,6 +39,7 @@
   line-height: 0.95;
   letter-spacing: 0.01em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* ---------- Barra verde ---------- */
@@ -107,6 +108,7 @@
   display: none;
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
   margin-left: auto;
   place-items: center;
   padding: 0;
@@ -176,13 +178,25 @@
     padding: 0 12px;
   }
 
-  .nav__links,
-  .nav__cta {
+  /* ".nav" delante sube la prioridad: theme.css (.pill) se carga después
+     y volvía a mostrar el botón amarillo en celular */
+  .nav .nav__links,
+  .nav .nav__cta {
     display: none;
   }
 
-  .nav__toggle {
+  .nav .nav__toggle {
     display: grid;
+  }
+
+  .nav__brand {
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .nav__bar {
+    flex: 1 0 auto;
+    justify-content: flex-end;
   }
 
   .nav__panel {
@@ -222,7 +236,8 @@
     text-decoration: none;
   }
 
-  .nav__panel-cta {
+  .nav .nav__panel-cta {
+    display: flex;
     justify-content: space-between;
     margin-top: 8px;
   }
@@ -238,8 +253,45 @@
   }
 }
 
-@media (max-width: 380px) {
+/* Celular */
+@media (max-width: 560px) {
+  .nav {
+    --nav-h: 64px;
+    --r: 20px;
+  }
+
+  .nav__brand {
+    gap: 10px;
+    padding: 0 16px 0 6px;
+  }
+
+  .nav__logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .nav__bar {
+    padding: 0 8px;
+  }
+
+  .nav__toggle {
+    width: 46px;
+    height: 46px;
+  }
+
+  .nav__panel-link {
+    height: 48px;
+    font-size: 1.4rem;
+  }
+}
+
+/* Celulares muy angostos */
+@media (max-width: 360px) {
   .nav__name {
     font-size: 0.95rem;
+  }
+
+  .nav__brand {
+    padding-right: 12px;
   }
 }
