@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Process from './components/Process'
 import Projects from './components/Projects'
 import Authors from './components/Authors'
 import Footer from './components/Footer'
@@ -12,6 +13,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <Process />
         <Projects />
         <Authors/>
       </main>

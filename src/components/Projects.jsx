@@ -3,14 +3,9 @@ import { projects as rawProjects } from '../data/projects.js'
 import './Projects.css'
 
 const ALL = 'Todos'
-const PREVIEW_WIDTH = 1280 // ancho "de escritorio" con el que se dibuja la vista previa
+const PREVIEW_WIDTH = 1280
 const PREVIEW_HEIGHT = 800
-
-// Permisos del iframe: deja usar la página (scripts, formularios, alertas)
-// pero no le permite redirigir tu sitio.
 const SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals'
-
-// Tamaños de pantalla para revisar cada página en el modal
 const DEVICES = [
   { id: 'desktop', label: 'Escritorio', width: '100%' },
   { id: 'tablet', label: 'Tablet', width: '820px' },
@@ -21,7 +16,6 @@ const AVATAR_COLORS = ['#0b7a3e', '#c8102e', '#1d3fd8', '#8a5a00', '#5b3cc4']
 
 /* ---------- Utilidades ---------- */
 
-// Si el enlace no trae https:// el navegador lo trata como una ruta de TU sitio
 const normalizeUrl = (url) => (/^https?:\/\//i.test(url) ? url : `https://${url.replace(/^\/+/, '')}`)
 
 const domainOf = (url) => {
