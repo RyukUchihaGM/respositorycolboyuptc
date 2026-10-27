@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import './Navbar.css'
 
+// Secciones de la página, en orden. Si una no existe, su enlace no aparece.
 const links = [
   { href: '#inicio', label: 'Inicio' },
   { href: '#proceso', label: 'Proceso' },
+  { href: '#antes', label: 'Antes' },
   { href: '#proyectos', label: 'Proyectos' },
   { href: '#nosotros', label: 'Nosotros' },
 ]
@@ -22,7 +24,7 @@ function Navbar() {
   useEffect(() => {
     if (!open) return
     const onKey = (e) => { if (e.key === 'Escape') setOpen(false) }
-    const mql = window.matchMedia('(min-width: 861px)')
+    const mql = window.matchMedia('(min-width: 1081px)')
     const onChange = () => { if (mql.matches) setOpen(false) }
     window.addEventListener('keydown', onKey)
     mql.addEventListener('change', onChange)
@@ -36,6 +38,28 @@ function Navbar() {
   useEffect(() => {
     if (panelRef.current) panelRef.current.inert = !open
   }, [open])
+
+  // Solo las secciones que existen en la página
+  const [items, setItems] = useState(links)
+  const [current, setCurrent] = useState('#inicio')
+
+  useEffect(() => {
+    setItems(links.filter((l) => document.querySelector(l.href)))
+  }, [])
+
+  // Marca el enlace de la sección que se está viendo
+  useEffect(() => {
+    const sections = items.map((l) => document.querySelector(l.href)).filter(Boolean)
+    if (!sections.length || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) setCurrent(`#${e.target.id}`) })
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+    sections.forEach((s) => io.observe(s))
+    return () => io.disconnect()
+  }, [items])
 
   const close = () => setOpen(false)
 
@@ -52,9 +76,15 @@ function Navbar() {
 
       <nav className="nav__bar" aria-label="Principal">
         <ul className="nav__links">
-          {links.map((l) => (
+          {items.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="nav__link">{l.label}</a>
+              <a
+                href={l.href}
+                className="nav__link"
+                aria-current={current === l.href ? 'true' : undefined}
+              >
+                {l.label}
+              </a>
             </li>
           ))}
         </ul>
@@ -79,8 +109,14 @@ function Navbar() {
 
       {/* Menú en celular */}
       <div className="nav__panel" id="nav-menu" ref={panelRef}>
-        {links.map((l) => (
-          <a key={l.href} href={l.href} className="nav__panel-link" onClick={close}>
+        {items.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className="nav__panel-link"
+            aria-current={current === l.href ? 'true' : undefined}
+            onClick={close}
+          >
             {l.label}
           </a>
         ))}

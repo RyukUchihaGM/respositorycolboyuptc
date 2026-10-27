@@ -95,8 +95,14 @@
   transition: background-color 150ms ease-out, color 150ms ease-out;
 }
 
+/* Sección que se está viendo */
+.nav__link[aria-current='true'] {
+  background-color: rgb(255 255 255 / 0.12);
+  color: var(--c-yellow);
+}
+
 @media (hover: hover) {
-  .nav__link:hover {
+  .nav__link:not([aria-current='true']):hover {
     background-color: rgb(255 255 255 / 0.1);
     color: var(--c-yellow);
   }
@@ -152,34 +158,12 @@
   outline-offset: 2px;
 }
 
-/* ---------- Tablet y celular ---------- */
+/* ---------- Menú de hamburguesa (hasta 1080px) ----------
+   Con 5 secciones y el botón "Explorar proyectos" la barra necesita ~1080px */
 
-@media (max-width: 860px) {
-  .nav {
-    --nav-h: 72px;
-    --r: 24px;
-    --edge: 8px;
-  }
-
-  .nav__brand {
-    padding: 0 20px 0 8px;
-  }
-
-  .nav__logo {
-    width: 34px;
-    height: 34px;
-  }
-
-  .nav__name {
-    font-size: 1.1rem;
-  }
-
-  .nav__bar {
-    padding: 0 12px;
-  }
-
+@media (max-width: 1080px) {
   /* ".nav" delante sube la prioridad: theme.css (.pill) se carga después
-     y volvía a mostrar el botón amarillo en celular */
+     y volvía a mostrar el botón amarillo */
   .nav .nav__links,
   .nav .nav__cta {
     display: none;
@@ -216,6 +200,12 @@
     transition: opacity 150ms ease-out, translate 150ms ease-out;
   }
 
+  /* En tablet el menú no ocupa todo el ancho */
+  .nav__panel {
+    left: auto;
+    width: min(420px, calc(100% - 2 * var(--edge)));
+  }
+
   .nav[data-open='true'] .nav__panel {
     opacity: 1;
     pointer-events: auto;
@@ -236,6 +226,11 @@
     text-decoration: none;
   }
 
+  .nav__panel-link[aria-current='true'] {
+    background-color: rgb(255 255 255 / 0.08);
+    color: var(--c-yellow);
+  }
+
   .nav .nav__panel-cta {
     display: flex;
     justify-content: space-between;
@@ -243,13 +238,48 @@
   }
 }
 
-@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+@media (max-width: 1080px) and (prefers-reduced-motion: no-preference) {
   .nav__panel {
     translate: 0 -12px;
   }
 
   .nav[data-open='true'] .nav__panel {
     translate: 0 0;
+  }
+}
+
+/* ---------- Tablet y celular: tamaños ---------- */
+
+@media (max-width: 860px) {
+  .nav {
+    --nav-h: 72px;
+    --r: 24px;
+    --edge: 8px;
+  }
+
+  .nav__brand {
+    padding: 0 20px 0 8px;
+  }
+
+  .nav__logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav__name {
+    font-size: 1.1rem;
+  }
+
+  .nav__bar {
+    padding: 0 12px;
+  }
+}
+
+/* En celular el menú ocupa todo el ancho */
+@media (max-width: 560px) {
+  .nav__panel {
+    left: var(--edge);
+    width: auto;
   }
 }
 

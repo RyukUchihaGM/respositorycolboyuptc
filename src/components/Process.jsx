@@ -302,11 +302,10 @@ function PromptCard({ step }) {
   )
 }
 
-/* ---------- Paso 5: cifras y proyectos reales ---------- */
+/* ---------- Paso 5: cifras del proyecto ---------- */
 
 const PLACEHOLDER = 'nombre del estudiante'
 const toList = (v) => (Array.isArray(v) ? v : [v]).filter(Boolean)
-const normalizeUrl = (url = '') => (/^https?:\/\//i.test(url) ? url : `https://${url}`)
 
 // Solo los proyectos actuales (los de "antes" van aparte)
 const current = projects.filter((p) => p.etapa !== 'antes')
@@ -314,9 +313,6 @@ const students = new Set(
   current.flatMap((p) => toList(p.authors ?? p.author)).filter((n) => n.trim().toLowerCase() !== PLACEHOLDER)
 )
 const courses = new Set(current.map((p) => p.course).filter(Boolean))
-const showcase = current
-  .filter((p) => !/example\.com/.test(p.url))
-  .slice(0, 3)
 
 function Results() {
   const stats = [
@@ -336,25 +332,6 @@ function Results() {
         ))}
       </ul>
 
-      {showcase.length > 0 && (
-        <>
-          <p className="proc-results__title">Algunos resultados</p>
-          <ul className="proc-results__list">
-            {showcase.map((p) => (
-              <li key={p.title}>
-                <a href={normalizeUrl(p.url)} target="_blank" rel="noreferrer" className="proc-results__item">
-                  <span className="proc-results__mono" aria-hidden="true">{p.title.slice(0, 2)}</span>
-                  <span className="proc-results__text">
-                    <strong>{p.title}</strong>
-                    <span>{toList(p.authors ?? p.author).join(' · ')}{p.course ? ` · ${p.course}` : ''}</span>
-                  </span>
-                  <span className="proc-results__go" aria-hidden="true">{Icon.arrow}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
     </div>
   )
 }

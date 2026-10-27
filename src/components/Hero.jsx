@@ -104,10 +104,6 @@ function Hero() {
           <p className="hero__text">
             Páginas creadas por estudiantes del Colegio de Boyacá (Colboy) en Tunja. Ábrelas, navégalas y mira cómo están hechas.
           </p>
-          <a href="#proyectos" className="pill">
-            Ver proyectos
-            <span className="pill__icon">{Icon.arrow}</span>
-          </a>
         </div>
 
         {/* Tarjeta amarilla: total + cinta con los nombres de los proyectos */}
