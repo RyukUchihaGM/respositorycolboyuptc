@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { projects } from '../data/projects.js'
+import { projects as allProjects } from '../data/projects.js'
+
+// Solo los proyectos actuales: los de "antes" (etapa: 'antes') no se cuentan
+const projects = allProjects.filter((p) => p.etapa !== 'antes')
 import './Hero.css'
 
 // Reemplaza estas rutas por tus imágenes (ej: import img1 from '../assets/img1.jpg')

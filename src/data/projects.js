@@ -4,7 +4,7 @@ export const projects = [
   // ---------- Repositorios actuales (grilla, sin límite) ----------
   {
     title: 'MobileStore',
-    description: 'Página de presentación para un negocio local con menú, horarios y ubicación.',
+    description: 'Tienda virtual de tecnología con catálogo de productos, precios y opciones de compra.',
     author: ['Nicolle Mariana Ladino Casallas'],
     course: '10-06',
     tags: ['HTML', 'CSS'],
@@ -13,7 +13,7 @@ export const projects = [
   },
   {
     title: 'Sombra&Sabor',
-    description: 'Sitio con presentación, habilidades y proyectos, adaptable a celular.',
+    description: 'Directorio gastronómico para descubrir restaurantes, explorar menús y encontrar lugares para comer.',
     author: 'Maria Kamila Gómez Sotelo',
     course: '10-05',
     tags: ['HTML', 'CSS'],
@@ -22,7 +22,7 @@ export const projects = [
   },
   {
     title: 'TerraWiki',
-    description: 'Calcula el promedio del periodo y la nota que falta para aprobar.',
+    description: 'Guía de Terraria con información sobre progresión, clases, objetos y estrategias del juego.',
     author: 'Sergio Alejandro Galindo Molina',
     course: '10-05',
     tags: ['HTML', 'CSS'],
@@ -30,13 +30,13 @@ export const projects = [
     repo: 'https://github.com/RyukUchihaGM/proyectos-colboy/tree/main/TerrariaPage',
   },
   {
-    title: 'Galería del colegio',
-    description: 'Galería de fotos con filtros por sede y vista ampliada de cada imagen.',
-    author: 'Nombre del estudiante',
+    title: 'Paris Haute Couture',
+    description: 'Galería de moda con fotografías filtrables por sede y opción de ampliar cada imagen.',
+    author: ['Laura Valentina Rodríguez Castellanos','María Alejandra Rodríguez Castellanos'] ,
     course: '10-1',
     tags: ['HTML', 'CSS', 'JavaScript'],
-    url: 'https://example.com',
-    repo: 'https://github.com/',
+    url: 'https://friendly-wisp-e61201.netlify.app',
+    repo: 'https://github.com/RyukUchihaGM/proyectos-colboy/tree/main/Paris',
   },
   {
     title: 'Lista de tareas',

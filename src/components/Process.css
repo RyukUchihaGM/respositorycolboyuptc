@@ -1607,8 +1607,10 @@
 
 @media (min-width: 1081px) and (min-height: 600px) {
   .process__body {
-    /* alto fijo: una pantalla, sin pasarse de 860px */
-    height: clamp(560px, calc(100svh - 40px), 860px);
+    /* alto de una pantalla (máx. 860px). Es un mínimo: si en alguna pantalla
+       el contenido no cabe, el panel crece en vez de desplazarse por dentro,
+       así la rueda del mouse siempre baja la página */
+    min-height: clamp(560px, calc(100svh - 40px), 860px);
   }
 
   .process__tabs {
@@ -1626,14 +1628,8 @@
 
   .process__panel {
     min-height: 0;
-    height: 100%;
     padding: clamp(28px, 3.2vw, 48px);
     gap: 32px clamp(32px, 4vw, 64px);
-    /* si algo no cabe, se desplaza dentro del panel y no rompe el diseño */
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(255 255 255 / 0.3) transparent;
   }
 
   .process__meta {

@@ -10,7 +10,7 @@
   border-radius: var(--r) 0 var(--r) var(--r);
   background-color: var(--c-green);
   color: #ffffff;
-  scroll-margin-top: 12px;
+  scroll-margin-top: 200px;
 }
 
 /* ---------- Nombre gigante (dentro del h1) ---------- */
