@@ -15,7 +15,9 @@ function loadPdf(src) {
         import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
       ])
       pdfjs.GlobalWorkerOptions.workerSrc = worker.default
-      return pdfjs.getDocument(src).promise
+      // verbosity: 0 = sin avisos en la consola (los PDF hechos en Word
+      // traen fuentes con detalles que pdf.js reporta, pero se ven bien)
+      return pdfjs.getDocument({ url: src, verbosity: 0 }).promise
     })()
     job.catch(() => pdfCache.delete(src)) // si falla, se puede reintentar
     pdfCache.set(src, job)

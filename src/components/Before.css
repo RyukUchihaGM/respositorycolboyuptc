@@ -128,10 +128,17 @@
 /* Escritorio con las pantallas en abanico */
 .early__desk {
   position: relative;
+  justify-self: center;
   list-style: none;
+  width: 100%;
+  /* Tope de ancho: las ventanas crecen con el ancho, y sin este límite
+     en pantallas grandes se salían por abajo del bloque */
+  max-width: 860px;
   margin: 0;
   padding: 0;
-  height: clamp(320px, 30vw, 440px);
+  /* alto proporcional al ancho (las ventanas miden 52% del ancho, 16:10) */
+  aspect-ratio: 1.85;
+  min-height: 340px;
 }
 
 .early__item {
@@ -319,6 +326,11 @@
 
   .early__desk {
     height: auto;
+    aspect-ratio: auto;
+    min-height: 0;
+    max-width: none;
+    width: auto;
+    justify-self: stretch;
     display: flex;
     gap: 16px;
     margin: 0 calc(-1 * clamp(28px, 4vw, 56px));
@@ -373,5 +385,21 @@
 
   .early__code {
     font-size: 0.8rem;
+  }
+}
+/* Pantallas grandes: texto más grande y las ventanas centradas en su columna */
+@media (min-width: 1600px) {
+  .early {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    padding: 48px 64px;
+  }
+
+  .early__title {
+    font-size: clamp(4.4rem, 3.6vw, 5.6rem);
+  }
+
+  .early__text {
+    max-width: 34rem;
+    font-size: 1.1rem;
   }
 }
